@@ -1,0 +1,3 @@
+rootProject.name = 'PhonicsTeacher'
+
+include ':app'
