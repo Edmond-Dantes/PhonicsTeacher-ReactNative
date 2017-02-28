@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 
 import GameView from "./Components/GameView";
-//import LetterView from "./Components/Letter";
+//import HUDView from "./Components/HUDView";
 
 var {
   height:deviceHeight,
@@ -25,28 +25,20 @@ export default class PhonicsTeacher extends Component {
 
   render() {
     return (
-      <View style = {styles.container}>
-        <GameView/>
-      </View>
+      //<View style = {styles.container}>
+        <GameView letterBackgroundColor = {StyleSheet.flatten(styles.container).backgroundColor}/>
+      //</View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: "black",//'#F5FCFF',
-    height: deviceHeight,//ScreenSize.getDeviceDimensions().height,
-    width: deviceWidth,//ScreenSize.getDeviceDimensions().width,
-  },
-  letter: {
-    fontSize: 100,
-    textAlign: 'center',
-    margin: 10,
-    color: "red",
-    //font:
+    flex: 0,
+    flexDirection: 'column',
+    backgroundColor: 'peru',//'burlywood',//'darkorange',//'darkslategray',//'#2f4f4f',
+    height: deviceHeight,
+    width: deviceWidth,
   },
 });
 

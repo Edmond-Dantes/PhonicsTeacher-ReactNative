@@ -15,6 +15,8 @@ import {
   Dimensions
 } from 'react-native';
 import LetterView from './LetterView';
+import HUDView from './HUDView';
+import GameLogic from '../GameLogic/GameLogic'
 
 var {
   height:deviceHeight,
@@ -35,107 +37,127 @@ function getNewRandomInt(min, max, previousRandomNumber){
   return randomNumber
 }
 
+//object to enumerate values for the letter view positions
+var letterViewPositions = {
+  'topLeft':1,
+  'topRight':2,
+  'bottomLeft':3,
+  'bottomRight':4,
+}
+
+var currentLetter = 'A'
+
 export default class GameView extends Component {
   state;
+  gameLogic:GameLogic;
+
   //props: {};
   constructor(props){
     super(props);
+    this.gameLogic = new GameLogic();
     this.state = {
-      positionToShow: 0,
-      previousRandomNumber: 0,
-      previousRandomDelayDelta: 0,
-      previousRandomDelay: 0,
+      activeScoreTouch: false,
       //shouldPositionHideArray: [false, false, false, false]
     };
   }
 
-  randomLetterRevealUpdate(averageLetterDisplayTime:number){
-      var randomNumber = getNewRandomInt(1, 4, this.state.previousRandomNumber)
-      var randomDisplayDelta = getNewRandomInt(0, (averageLetterDisplayTime / 100), this.state.previousRandomDelayDelta) * 100 - averageLetterDisplayTime/2
-
-      this.setState({
-        positionToShow: randomNumber,
-      });
-
-      setTimeout( () => {
-        this.setState({
-          positionToShow: 0,
-          previousRandomNumber: randomNumber,
-          previousRandomDelayDelta: randomDisplayDelta
-        });
-      }, averageLetterDisplayTime + randomDisplayDelta);
-  }
-
-  startRandomLetterReveal(){
-    var that = this;
-    var averageLetterDisplayTime = 1000;
-    var averageTimerInterval = 3000;
-
-    this.randomLetterRevealUpdate(averageLetterDisplayTime);
-
-    (function setTimeoutTimer(){
-      var randomDelay = averageTimerInterval + 100 * getNewRandomInt(0, (averageTimerInterval / 400), that.state.previousRandomDelay) - averageLetterDisplayTime/4;
-      setTimeout( ()=>{
-        that.randomLetterRevealUpdate(averageLetterDisplayTime);
-        that.setState({
-          previousRandomDelay: randomDelay
-        });
-        setTimeoutTimer();
-      }, randomDelay);
-    })();
-
-
-    /*
-    setInterval( ()=>{
-      this.randomLetterRevealUpdate(delay)
+  shouldShowPosition(position:string){
+    switch (position) {
+      case 'topLeft': case 'topRight': case 'bottomLeft': case 'bottomRight':
+        return this.gameLogic.positionToShow == letterViewPositions[position] //object
+      default:
+        console.log('error: '+position+' is not a positon name! Check the spelling!')
+        return false
     }
-    , delay);
-    */
+    //return this.state.positionToShow == letterViewPositions[position] //object
   }
 
-  shouldShowPosition(position:number){
-    return this.state.positionToShow == position
+  updateCount(displayLetter:string, position:string, previousCount:number){//count:number){
+
+    if (!this.state.activeScoreTouch && currentLetter == displayLetter && this.shouldShowPosition(position)){
+        this.setState({
+          activeScoreTouch: true,
+        });
+        this.gameLogic.scoreCount = ++this.gameLogic.scoreCount
+        this.updateRender();
+      return previousCount + 1
+    }
   }
 
   componentDidMount(){
-    this.startRandomLetterReveal();
+    //this.startRandomLetterReveal();
+    this.gameLogic.startRandomLetterReveal(this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this));
   }
 
   componentWillUnmount(){
-    clearInterval()
+    //clearInterval()
+    this.gameLogic.stopRandomLetterReveal()
+    //this.gameLogic = null//new GameLogic();
+  }
+
+  updateRender(){
+    //console.log(this.state.scoreCount);
+    (this.setState({
+      //scoreCount: this.state.scoreCount + 1,
+    }));
+  }
+
+  updateActiveScoreTouch(){
+    this.setState({
+      activeScoreTouch: false,
+    });
   }
 
   render() {
-    var letter = ['','A','B','C','D'];
+    var testLetterArray = ['','A','B','C','D'];
+    var letterArray = ['A','O','U'];
+    //this.gameLogic.randomLetterIndex = getNewRandomInt(0, 2, this.gameLogic.previousRandomLetterIndex);
+    const randomLetter = letterArray[this.gameLogic.randomLetterIndex];
+    const letter = randomLetter//'A' //randomLetter
+
+    //console.log(this.gameLogic.randomLetterIndex +' ')
+
     return (
-      <View style={styles.container}>
-        <View style = {styles.letterRow}>
-          <LetterView
-            position = 'topLeft'
-            backgroundColor = 'royalblue'
-            letter = {letter[1]}
-            showLetter = {this.shouldShowPosition(1)}
-          />
-          <LetterView
-            position = 'topRight'
-            backgroundColor = 'goldenrod'
-            letter = {letter[2]}
-            showLetter = {this.shouldShowPosition(2)}
-          />
-        </View>
-        <View style = {styles.letterRow}>
-          <LetterView
-            position = 'bottomLeft'
-            backgroundColor = 'tomato'
-            letter = {letter[3]}
-            showLetter = {this.shouldShowPosition(3)}
-          />
-          <LetterView
-            position = 'bottomRight'
-            backgroundColor = 'seagreen'
-            letter = {letter[4]}
-            showLetter = {this.shouldShowPosition(4)}
-          />
+      <View style = {styles.bigContainer}>
+        <HUDView scoreCount = {this.gameLogic.scoreCount}/>
+        <View style = {styles.container}>
+          <View style = {styles.letterRow}>
+            <LetterView
+              //test = {this.state.activeScoreTouch}
+              onPress = {this.updateCount.bind(this, letter, 'topLeft', this.gameLogic.scoreCount)}
+              position = 'topLeft'
+              backgroundColor = {'royalblue'}
+              letter = {letter}
+              showLetter = {this.shouldShowPosition('topLeft')}
+              letterBackgroundColor = {this.props.letterBackgroundColor}
+            />
+            <LetterView
+              onPress = {this.updateCount.bind(this, letter, 'topRight', this.gameLogic.scoreCount)}
+              position = 'topRight'
+              backgroundColor = 'goldenrod'
+              letter = {letter}
+              showLetter = {this.shouldShowPosition('topRight')}
+              letterBackgroundColor = {this.props.letterBackgroundColor}
+            />
+          </View>
+          <View style = {styles.letterRow}>
+            <LetterView
+              onPress = {this.updateCount.bind(this, letter, 'bottomLeft', this.gameLogic.scoreCount)}
+              position = 'bottomLeft'
+              backgroundColor = 'tomato'
+              letter = {letter}
+              showLetter = {this.shouldShowPosition('bottomLeft')}
+              letterBackgroundColor = {this.props.letterBackgroundColor}
+            />
+            <LetterView
+              onPress = {this.updateCount.bind(this, letter, 'bottomRight', this.gameLogic.scoreCount)}
+              position = 'bottomRight'
+              backgroundColor = 'seagreen'
+              letter = {letter}
+              showLetter = {this.shouldShowPosition('bottomRight')}
+              letterBackgroundColor = {this.props.letterBackgroundColor}
+            />
+          </View>
         </View>
       </View>
     );
@@ -144,11 +166,21 @@ export default class GameView extends Component {
 
 
 const styles = StyleSheet.create({
+  bigContainer: {
+    flex: 0,
+    flexDirection: 'column',
+    backgroundColor: 'peru',//'burlywood',//'darkorange',//'darkslategray',//'#2f4f4f',
+    height: deviceHeight,
+    width: deviceWidth,
+  },
   container: {
     flex: 0,
-    backgroundColor: "darkslategray",
+    //backgroundColor: 'darkslategray',
     height: deviceWidth,
     width: deviceWidth,
+    alignSelf: 'center',
+    position: 'absolute',
+    top: deviceHeight / 2 - deviceWidth / 2,
   },
   letterRow: {
     flex: 1,
