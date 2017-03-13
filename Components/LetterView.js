@@ -16,6 +16,8 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   LayoutAnimation,
+  Animated,
+  Easing,
 } from 'react-native';
 
 var {
@@ -30,20 +32,81 @@ var backgroundColorToMatchLetter = {
   'default':'royalblue' //'royalblue','tomato','seagreen','goldenrod'
 };
 
-class Letter extends Component{
-  /*
+var startCount = 0;
+
+class AnimatedLetter extends Component{
+  state;
   constructor(props){
     super(props);
+    this.state = {
+      position : new Animated.Value(0),//-deviceHeight * .25),
+      _opacityAnimation : new Animated.Value(0)
+    };
   }
-  */
+  defaultProps = {
+    onComplete: ()=>{},
+    letter:'',
+  }
+
+  /*_opacityAnimation = this.state.position.interpolate({
+      inputRange: [0, (-deviceHeight * .25)],
+      outputRange: [1, 0]
+    });
+*/
+  componentWillMount(){
+    this.state._opacityAnimation = this.state.position.interpolate({
+        inputRange: [(-deviceHeight * .25), (-deviceHeight / 8), 0],
+        outputRange: [0, .75, .75]
+      });
+  }
+
+  componentDidMount(){
+    Animated.timing(
+      this.state.position,
+      {
+        duration: 750,
+        toValue: -deviceHeight * .25,
+        //easing: Easing.out(Easing.ease),
+      }
+    ).start(this.props.onComplete);
+  }
+
+
   render(){
-    //this.props.letter = letter;
+    return (
+      <View style = {[styles.animatedLetterView, {position:'absolute', borderWidth: 0,}]}>
+        <Animated.Text style = {[{ alignSelf: 'center', color: 'white', fontSize: 150, backgroundColor: 'transparent',
+          transform:[
+            {translateY: this.state.position}
+          ]}, {opacity: this.state._opacityAnimation}]}
+        >
+          {this.props.letter}
+        </Animated.Text>
+      </View>
+    );
+  }
+}
+
+class Letter extends Component{
+  state;
+  constructor(props){
+    super(props);
+    this.state = {
+      //fontSize : 100,//StyleSheet.flatten(styles.letter).fontSize,
+    };
+  }
+
+  render(){
     let display = this.props.showLetter ? this.props.letter : '';
     //let {color:currentFontColor} = styles.letter;
-    let fontColor = (this.props.letter /*== 'A'*/) ? StyleSheet.flatten(styles.letter).color : 'transparent';
+    let fontColor = (!this.props.letter /*== 'A'*/) ? 'transparent':StyleSheet.flatten(styles.letter).color;
     //console.log(fontColor)
+    //this.props.increaseFontSize();
+
     return (
-      <Text style = {[styles.letter, {color: fontColor}]}> {display} </Text>
+      <View >
+        <Animated.Text style = {[styles.letter, {color: fontColor, fontSize: this.props.fontSize }]}> {display} </Animated.Text>
+      </View>
     );
   }
 }
@@ -54,74 +117,256 @@ export default class LetterView extends Component {
   constructor(props){
     super(props);
     this.state = {
-      w: StyleSheet.flatten(styles.letterView).width,
-      h: StyleSheet.flatten(styles.letterView).height,
+      w: new Animated.Value(standardWidth),
+      h: standardHeight,
       isPressed: false,
+      scored:false,
+      wrongLetter:false,
+      increaseFontSize: false,
+      fontSize: new Animated.Value(100),
+      floatingLetter: [],
     };
   }
 
+  componentWillMount(){
+
+  }
   backgroundColorWhenHidden(){
     if (!this.props.showLetter){
       return this.props.letterBackgroundColor //'darkorange'//'darkslategray'//'beige'
     }
   }
 
-  _onPress(){
-    //this.setState({letter : this.props.letter});
+  didScore(yes:bool = true){
+    this.setState({
+      scored:yes,
+    });
+  }
 
-    if (!this.state.isPressed){
-      if (this.props.onPress()){
-        setTimeout( () =>{
-          LayoutAnimation.spring();
-          this.setState({
-            w: this.state.w - 15,
-            h: this.state.h - 15,
-            isPressed: false,
-          })
-        }, 100)
-        LayoutAnimation.spring();
-        this.setState({
-          w: this.state.w + 15,
-          h: this.state.h + 15,
-          isPressed: true,
-        })
-      }else {
-        setTimeout( () =>{
-          LayoutAnimation.spring();
-          this.setState({
-            w: this.state.w + 10,
-            h: this.state.h + 10,
-            isPressed: false
-          })
-        }, 1000)
-        LayoutAnimation.spring();
-        this.setState({
-          w: this.state.w - 10,
-          h: this.state.h - 10,
-          isPressed: true,
-        })
-      }
+  didHitWrongLetter(yes:bool = true){
+    this.setState({
+      wrongLetter:yes,
+    });
+  }
+
+  resetScoringFlags(inRender:bool){
+    if (inRender){
+      this.state.scored = false;
+      this.state.wrongLetter = false;
     }
+    else {
+      this.setState({
+        scored:false,
+        wrongLetter:false,
+      });
+    }
+
   }
 
-  _onOutPress(){
-
+  setPressed(pressed:bool){
+    this.setState({
+      isPressed: pressed,
+    });
   }
 
-  componentWillMount(){
+  //Class Function _onPress: Several Animation functions start!
+  springOutAnimation(toSize:number, callBack?:()=>{}){
+    /*
     LayoutAnimation.spring();
+    this.setState({
+      w: this.state.w + standardWidth * sizePercent/100,
+      h: this.state.h + standardHeight * sizePercent/100,
+      isPressed: pressed,
+    });
+    */
+    /*var floatingLetterAnimation = ()=>{};
+    if (scored){
+      floatingLetterAnimation = this.addFloatingLetter();
+    }*/
+    Animated.spring(
+           this.state.w,
+           {
+             toValue: toSize,
+             friction: 5,
+             tension: 100,
+           }
+         ).start(callBack);
   }
-  render() {
+
+  springInAnimation(toSize:number, callBack?:()=>{}){
+    /*
+    LayoutAnimation.spring();
+    this.setState({
+      w: this.state.w - standardWidth * sizePercent/100,
+      h: this.state.h - standardHeight * sizePercent/100,
+      isPressed: pressed,
+    });
+    */
+
+    Animated.spring(
+           this.state.w,
+           {
+             toValue: toSize,
+             friction: 5,
+             tension: 100,
+           }
+         ).start(callBack);
+  }
+
+  scoredAnimation(){
+    const sizeDelta = 50; //percentage increase
+    const toSize = standardWidth + standardWidth * sizeDelta/100;
+    const returnSize = standardWidth;
+    const pressAnimationTime = 1000;
+
+    var that = this;
+    setTimeout( () =>{
+      that.props.startReveal();
+      that.unscaleFontSize();
+      that.springInAnimation(returnSize, this.setPressed(false));
+    }, pressAnimationTime);
+    this.props.stopReveal();
+    this.scaleFontSize(150);
+    this.springOutAnimation(toSize);
+    this.setPressed(true);
+    setTimeout( ()=>{
+      this.addFloatingLetter();
+    }, 250);
+  }
+
+  wrongLetterAnimation(){
+    const sizeDelta = 30; //percentage decrease
+    const toSize = standardWidth - standardWidth * sizeDelta/100;
+    const returnSize = standardWidth;
+    const pressAnimationTime = 100;
+    var that = this;
+    setTimeout( () =>{
+      that.props.startReveal();
+      that.scaleFontSize(100);
+      that.springOutAnimation(returnSize, this.setPressed(false));
+    }, pressAnimationTime)
+    this.springInAnimation(toSize);
+    this.props.stopReveal();
+    this.unscaleFontSize(70)
+    this.setPressed(true);
+  }
+
+  inactionPressAnimation(){
+    const sizeDelta = 10; //percentage decrease
+    const toSize = standardWidth - standardWidth * sizeDelta/100;
+    const returnSize = standardWidth;
+    const pressAnimationTime = 100;
+    var that = this;
+    setTimeout( () =>{
+      that.springOutAnimation(returnSize);
+      that.scaleFontSize(100);
+    }, pressAnimationTime)
+    this.springInAnimation(toSize);
+    this.unscaleFontSize(90)
+  }
+
+  _onPress(){
+    var pressedCorrectLetter = this.props.onPress()?true:false;
+
+    if (this.props.showLetter){
+      if (this.state.scored || this.state.wrongLetter){
+        if (!this.state.isPressed){
+        this.inactionPressAnimation();
+        }
+      }
+      else if (pressedCorrectLetter){
+        this.scoredAnimation();
+        this.didScore(true);
+      }
+      else{
+        this.wrongLetterAnimation();
+        this.didHitWrongLetter(true);
+      }
+    }else if (!this.props.showLetter){
+      this.inactionPressAnimation();
+      this.resetScoringFlags(false) //not in render so false
+    }
+    //Class Function _onPress: Several Animation functions end!
+
+  }
+
+  scaleFontSize(size:number = 150){
+    Animated.spring(
+           this.state.fontSize,
+           {
+             toValue: size,
+             friction: 5,
+             tension: 100,
+           }
+         ).start();
+  }
+
+  unscaleFontSize(size:number = 100){
+    Animated.spring(
+           this.state.fontSize,
+           {
+             toValue: size,
+             friction: 5,
+             tension: 100,
+           }
+         ).start();
+  }
+
+  _onOutPress(){}
+
+  componentDidMount(){
+  }
+
+  addFloatingLetter(){
+    startCount += 1;
+    this.state.floatingLetter.push({
+      id: startCount,
+    });
+    this.setState(this.state);
+  }
+
+  removeFloatingLetter(v:number){
+    var index = this.state.floatingLetter.findIndex(function(letter) { return letter.id === v});
+    this.state.floatingLetter.splice(index, 1);
+    this.setState(this.state);
+  }
+
+  renderAnimatedLetter(){
+
     return (
+      this.state.floatingLetter.map( function(v,i){
+        return (
+        <AnimatedLetter
+          key = {v.id}
+          letter = {this.props.letter}
+          onComplete = {this.removeFloatingLetter.bind(this, v.id)}
+        />
+      )
+      }, this)
+    )
+  }
+
+  render() {
+
+    if (!this.props.showLetter){
+      this.resetScoringFlags(true); //in render so true
+    }
+
+    return (
+      <View>
       <TouchableWithoutFeedback onPressIn = {this._onPress.bind(this)}>
-        <View style = {[styles.letterView, {width: this.state.w, height: this.state.h}, {backgroundColor: this.backgroundColorWhenHidden() || /*backgroundColorToMatchLetter[this.props.letter] ||*/ this.props.backgroundColor}]}>
-          <Letter
-            position = {this.props.position}
-            showLetter = {this.props.showLetter}
-            letter = {this.props.letter}
-          />
-        </View>
+          <Animated.View style = {[styles.letterView, {width: this.state.w, height: this.state.w}, {backgroundColor: this.backgroundColorWhenHidden() || /*backgroundColorToMatchLetter[this.props.letter] ||*/ this.props.backgroundColor}]}>
+            <Letter
+              position = {this.props.position}
+              showLetter = {this.props.showLetter}
+              letter = {this.props.letter}
+              fontSize = {this.state.fontSize}
+              //increaseFontSize = {this.scaleFontSize.bind(this)}
+            />
+          </Animated.View>
       </TouchableWithoutFeedback>
+      <View style = {{position:'absolute'}}>{this.renderAnimatedLetter()}</View>
+    </View>
     );
   }
 }
@@ -137,8 +382,6 @@ const styles = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: 'transparent',
   },
   letterView: {
@@ -151,7 +394,22 @@ const styles = StyleSheet.create({
     height: deviceWidth/2 - 10,
     width: deviceWidth/2 - 10,
     //overflow: 'hidden',
-  }
+  },
+  animatedLetterView: {
+    justifyContent: 'center',
+    backgroundColor: 'transparent',//backColor,
+    alignItems: 'center',
+    borderWidth: 10,//StyleSheet.hairlineWidth,
+    borderRadius: 50,//deviceWidth/2,\
+    borderColor: 'beige',
+    height: (deviceWidth/2 - 10) * 1.5,
+    width: (deviceWidth/2 - 10) * 1.5,
+    //overflow: 'hidden',
+  },
 });
+
+const standardWidth = StyleSheet.flatten(styles.letterView).width;
+const standardHeight = StyleSheet.flatten(styles.letterView).height;
+
 
 //AppRegistry.registerComponent('PhonicsTeacher', () => PhonicsTeacher);

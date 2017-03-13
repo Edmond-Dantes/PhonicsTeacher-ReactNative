@@ -113,8 +113,8 @@ export default class GameView extends Component {
     var letterArray = ['A','O','U'];
     //this.gameLogic.randomLetterIndex = getNewRandomInt(0, 2, this.gameLogic.previousRandomLetterIndex);
     const randomLetter = letterArray[this.gameLogic.randomLetterIndex];
-    const letter = randomLetter//'A' //randomLetter
-
+    const letter = randomLetter;//'A' //randomLetter
+    const correctDelayTime = 1000;
     //console.log(this.gameLogic.randomLetterIndex +' ')
 
     return (
@@ -123,39 +123,50 @@ export default class GameView extends Component {
         <View style = {styles.container}>
           <View style = {styles.letterRow}>
             <LetterView
-              //test = {this.state.activeScoreTouch}
+              //test = {this.scaleFontSize}
               onPress = {this.updateCount.bind(this, letter, 'topLeft', this.gameLogic.scoreCount)}
               position = 'topLeft'
               backgroundColor = {'royalblue'}
               letter = {letter}
               showLetter = {this.shouldShowPosition('topLeft')}
               letterBackgroundColor = {this.props.letterBackgroundColor}
+              stopReveal = {this.gameLogic.stopRandomLetterReveal.bind(this.gameLogic.that)}
+              startReveal = {this.gameLogic.startRandomLetterReveal.bind(this.gameLogic.that, this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this), true, correctDelayTime)}
             />
             <LetterView
+              //test = {this.scaleFontSize}
               onPress = {this.updateCount.bind(this, letter, 'topRight', this.gameLogic.scoreCount)}
               position = 'topRight'
               backgroundColor = 'goldenrod'
               letter = {letter}
               showLetter = {this.shouldShowPosition('topRight')}
               letterBackgroundColor = {this.props.letterBackgroundColor}
+              stopReveal = {this.gameLogic.stopRandomLetterReveal.bind(this.gameLogic.that)}
+              startReveal = {this.gameLogic.startRandomLetterReveal.bind(this.gameLogic.that, this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this), true, correctDelayTime)}
             />
           </View>
           <View style = {styles.letterRow}>
             <LetterView
+              //test = {this.scaleFontSize}
               onPress = {this.updateCount.bind(this, letter, 'bottomLeft', this.gameLogic.scoreCount)}
               position = 'bottomLeft'
               backgroundColor = 'tomato'
               letter = {letter}
               showLetter = {this.shouldShowPosition('bottomLeft')}
               letterBackgroundColor = {this.props.letterBackgroundColor}
+              stopReveal = {this.gameLogic.stopRandomLetterReveal.bind(this.gameLogic.that)}
+              startReveal = {this.gameLogic.startRandomLetterReveal.bind(this.gameLogic.that, this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this), true, correctDelayTime)}
             />
             <LetterView
+              //test = {this.scaleFontSize}
               onPress = {this.updateCount.bind(this, letter, 'bottomRight', this.gameLogic.scoreCount)}
               position = 'bottomRight'
               backgroundColor = 'seagreen'
               letter = {letter}
               showLetter = {this.shouldShowPosition('bottomRight')}
               letterBackgroundColor = {this.props.letterBackgroundColor}
+              stopReveal = {this.gameLogic.stopRandomLetterReveal.bind(this.gameLogic.that)}
+              startReveal = {this.gameLogic.startRandomLetterReveal.bind(this.gameLogic.that, this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this), true, correctDelayTime)}
             />
           </View>
         </View>

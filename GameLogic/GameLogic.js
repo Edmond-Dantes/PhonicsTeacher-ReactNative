@@ -38,6 +38,9 @@ export default class GameLogic{
   previousRandomLetterIndex: number;
   randomLetterIndex: number;
   scoreCount: number;
+  randomLetterRevealStartTimer;
+  letterRevealTimer;
+  that = this;
   constructor(){
     this.positionToShow = 0;
     this.previousRandomNumber = 0;
@@ -53,39 +56,66 @@ export default class GameLogic{
       var randomDisplayDelta = getNewRandomInt(0, (averageLetterDisplayTime / 100), this.previousRandomDelayDelta) * 100 - averageLetterDisplayTime/2
 
       this.positionToShow = randomNumber;
+      this.previousRandomNumber = randomNumber;
+      this.previousRandomDelayDelta = randomDisplayDelta;
+      this.previousRandomLetterIndex = this.randomLetterIndex;
+      renderUpdate();
 
-      setTimeout( () => {
+      this.letterRevealTimer = setTimeout( () => {
         //console.log(randomNumber +' ')
         this.positionToShow = 0;
-        this.previousRandomNumber = randomNumber;
-        this.previousRandomDelayDelta = randomDisplayDelta;
-        this.previousRandomLetterIndex = this.randomLetterIndex;
+        //this.previousRandomNumber = randomNumber;
+        //this.previousRandomDelayDelta = randomDisplayDelta;
+        //this.previousRandomLetterIndex = this.randomLetterIndex;
         renderUpdate();
         activeScoreTouchUpdate();
       }, averageLetterDisplayTime + randomDisplayDelta);
   }
 
-  startRandomLetterReveal(renderUpdate, activeScoreTouchUpdate){
+  startRandomLetterReveal(renderUpdate, activeScoreTouchUpdate, willRestart:bool = false, revealReliefTime:number){
     var that = this;
     var averageLetterDisplayTime = 1000; //range = 50% to 150%
     var averageTimerInterval = 2000; //range = 75% to 125%
-
-    that.randomLetterRevealUpdate(averageLetterDisplayTime, renderUpdate, activeScoreTouchUpdate);
-
-    (function setTimeoutTimer(){
-      var randomDelay = averageTimerInterval + (averageTimerInterval / 8) * getNewRandomInt(0, 4, that.previousRandomDelay) - averageLetterDisplayTime/4;
-      setTimeout( ()=>{
-        that.randomLetterIndex = getNewRandomInt(0, 2, that.previousRandomLetterIndex);
-        that.randomLetterRevealUpdate(averageLetterDisplayTime, renderUpdate, activeScoreTouchUpdate);
-        that.previousRandomDelay = randomDelay;
+    if (willRestart){
+      setTimeout(()=>{
+        this.positionToShow = 0;
+        activeScoreTouchUpdate();
         renderUpdate();
-        setTimeoutTimer();
-      }, randomDelay);
-    })();
+        call();
+      }, revealReliefTime);
+      //this.positionToShow = 0;
+      this.previousRandomLetterIndex = this.randomLetterIndex;
+      this.previousRandomNumber = this.positionToShow
+
+    }else{
+      call();
+    }
+    function call(){
+      //that.randomLetterRevealUpdate(averageLetterDisplayTime, renderUpdate, activeScoreTouchUpdate);
+
+      (function setTimeoutTimer(){
+        var randomDelay = averageTimerInterval + (averageTimerInterval / 8) * getNewRandomInt(0, 4, that.previousRandomDelay) - averageLetterDisplayTime/4;
+        that.randomLetterRevealStartTimer = setTimeout( ()=>{
+          that.randomLetterIndex = getNewRandomInt(0, 2, that.previousRandomLetterIndex);
+          that.randomLetterRevealUpdate(averageLetterDisplayTime, renderUpdate, activeScoreTouchUpdate);
+          that.previousRandomDelay = randomDelay;
+          renderUpdate();
+          setTimeoutTimer();
+        }, randomDelay);
+      })();
+    }
   }
 
   stopRandomLetterReveal(){
-    clearInterval()
+    //var that = this;
+    clearTimeout(this.letterRevealTimer);
+    clearTimeout(this.randomLetterRevealStartTimer);
+    //clearInterval();
+  }
+
+  getThis(){
+    var that = this;
+    return that
   }
 
 }
