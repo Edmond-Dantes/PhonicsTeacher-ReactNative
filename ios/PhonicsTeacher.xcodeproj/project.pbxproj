@@ -36,6 +36,10 @@
 		2DCD954D1E0B4F2C00145EB5 /* PhonicsTeacherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* PhonicsTeacherTests.m */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		859416531E7FD76600F61372 /* aSound1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 859416501E7FD76600F61372 /* aSound1.mp3 */; };
+		859416541E7FD76600F61372 /* oSound1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 859416511E7FD76600F61372 /* oSound1.mp3 */; };
+		859416551E7FD76600F61372 /* uSound1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 859416521E7FD76600F61372 /* uSound1.mp3 */; };
+		B12F752D7372464DBF5A247F /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB3FED1CF1934713A6C400CD /* libRNSound.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -228,6 +232,13 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+		8594164E1E7FD68800F61372 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92C7419B2060481AADD40D55 /* RNSound.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 19825A1E1BD4A89800EE0337;
+			remoteInfo = RNSound;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -255,6 +266,11 @@
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		859416501E7FD76600F61372 /* aSound1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = aSound1.mp3; path = "../../../Game Development/PhonicsGame/aSound1.mp3"; sourceTree = "<group>"; };
+		859416511E7FD76600F61372 /* oSound1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = oSound1.mp3; path = "../../../Game Development/PhonicsGame/oSound1.mp3"; sourceTree = "<group>"; };
+		859416521E7FD76600F61372 /* uSound1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = uSound1.mp3; path = "../../../Game Development/PhonicsGame/uSound1.mp3"; sourceTree = "<group>"; };
+		92C7419B2060481AADD40D55 /* RNSound.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
+		FB3FED1CF1934713A6C400CD /* libRNSound.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSound.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +297,7 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
+				B12F752D7372464DBF5A247F /* libRNSound.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,6 +410,9 @@
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
+				859416501E7FD76600F61372 /* aSound1.mp3 */,
+				859416511E7FD76600F61372 /* oSound1.mp3 */,
+				859416521E7FD76600F61372 /* uSound1.mp3 */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -447,6 +467,7 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
+				92C7419B2060481AADD40D55 /* RNSound.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -479,6 +500,14 @@
 				00E356EE1AD99517003FC87E /* PhonicsTeacherTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* PhonicsTeacher-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* PhonicsTeacher-tvOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		859416321E7FD68300F61372 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8594164F1E7FD68800F61372 /* libRNSound.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -564,7 +593,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 610;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -641,6 +670,10 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+				},
+				{
+					ProductGroup = 859416321E7FD68300F61372 /* Products */;
+					ProjectRef = 92C7419B2060481AADD40D55 /* RNSound.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -829,6 +862,13 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		8594164F1E7FD68800F61372 /* libRNSound.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSound.a;
+			remoteRef = 8594164E1E7FD68800F61372 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -844,7 +884,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				859416551E7FD76600F61372 /* uSound1.mp3 in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				859416541E7FD76600F61372 /* oSound1.mp3 in Resources */,
+				859416531E7FD76600F61372 /* aSound1.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -970,6 +1013,10 @@
 				INFOPLIST_FILE = PhonicsTeacherTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -987,6 +1034,10 @@
 				INFOPLIST_FILE = PhonicsTeacherTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1049,6 +1100,10 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "PhonicsTeacher-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1075,6 +1130,10 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "PhonicsTeacher-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1100,6 +1159,10 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "PhonicsTeacher-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.PhonicsTeacher-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
@@ -1121,6 +1184,10 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "PhonicsTeacher-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.PhonicsTeacher-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;

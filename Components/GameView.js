@@ -108,22 +108,33 @@ export default class GameView extends Component {
     });
   }
 
+  isTopRowZIndexPriority(){
+    if (this.shouldShowPosition('topLeft') || this.shouldShowPosition('topRight')){
+      return true;
+    }
+    return false;
+  }
+
   render() {
     var testLetterArray = ['','A','B','C','D'];
     var letterArray = ['A','O','U'];
-    //this.gameLogic.randomLetterIndex = getNewRandomInt(0, 2, this.gameLogic.previousRandomLetterIndex);
+    var letterSounds = ['aSound1.mp3', 'oSound1.mp3', 'uSound1.mp3'];
+
     const randomLetter = letterArray[this.gameLogic.randomLetterIndex];
     const letter = randomLetter;//'A' //randomLetter
     const correctDelayTime = 1000;
-    //console.log(this.gameLogic.randomLetterIndex +' ')
+
+
+    var topRowZIndex = this.isTopRowZIndexPriority()?1:0;
+    var bottomRowZIndex = this.isTopRowZIndexPriority()?0:1;
 
     return (
       <View style = {styles.bigContainer}>
         <HUDView scoreCount = {this.gameLogic.scoreCount}/>
         <View style = {styles.container}>
-          <View style = {styles.letterRow}>
+          <View style = {[styles.letterRow, {zIndex: topRowZIndex}]}>
             <LetterView
-              //test = {this.scaleFontSize}
+
               onPress = {this.updateCount.bind(this, letter, 'topLeft', this.gameLogic.scoreCount)}
               position = 'topLeft'
               backgroundColor = {'royalblue'}
@@ -134,7 +145,7 @@ export default class GameView extends Component {
               startReveal = {this.gameLogic.startRandomLetterReveal.bind(this.gameLogic.that, this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this), true, correctDelayTime)}
             />
             <LetterView
-              //test = {this.scaleFontSize}
+
               onPress = {this.updateCount.bind(this, letter, 'topRight', this.gameLogic.scoreCount)}
               position = 'topRight'
               backgroundColor = 'goldenrod'
@@ -145,9 +156,9 @@ export default class GameView extends Component {
               startReveal = {this.gameLogic.startRandomLetterReveal.bind(this.gameLogic.that, this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this), true, correctDelayTime)}
             />
           </View>
-          <View style = {styles.letterRow}>
+          <View style = {[styles.letterRow, {zIndex: bottomRowZIndex}]}>
             <LetterView
-              //test = {this.scaleFontSize}
+
               onPress = {this.updateCount.bind(this, letter, 'bottomLeft', this.gameLogic.scoreCount)}
               position = 'bottomLeft'
               backgroundColor = 'tomato'
@@ -158,7 +169,7 @@ export default class GameView extends Component {
               startReveal = {this.gameLogic.startRandomLetterReveal.bind(this.gameLogic.that, this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this), true, correctDelayTime)}
             />
             <LetterView
-              //test = {this.scaleFontSize}
+
               onPress = {this.updateCount.bind(this, letter, 'bottomRight', this.gameLogic.scoreCount)}
               position = 'bottomRight'
               backgroundColor = 'seagreen'
@@ -180,13 +191,12 @@ const styles = StyleSheet.create({
   bigContainer: {
     flex: 0,
     flexDirection: 'column',
-    backgroundColor: 'peru',//'burlywood',//'darkorange',//'darkslategray',//'#2f4f4f',
+    backgroundColor: 'peru',
     height: deviceHeight,
     width: deviceWidth,
   },
   container: {
     flex: 0,
-    //backgroundColor: 'darkslategray',
     height: deviceWidth,
     width: deviceWidth,
     alignSelf: 'center',

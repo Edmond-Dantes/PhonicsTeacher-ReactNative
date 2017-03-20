@@ -114,6 +114,8 @@ class Letter extends Component{
 
 export default class LetterView extends Component {
   state;
+  friction = 3;
+  tension = 20;
   constructor(props){
     super(props);
     this.state = {
@@ -125,6 +127,7 @@ export default class LetterView extends Component {
       increaseFontSize: false,
       fontSize: new Animated.Value(100),
       floatingLetter: [],
+      zIndex:0,
     };
   }
 
@@ -153,11 +156,13 @@ export default class LetterView extends Component {
     if (inRender){
       this.state.scored = false;
       this.state.wrongLetter = false;
+      this.state.zIndex = 0;
     }
     else {
       this.setState({
         scored:false,
         wrongLetter:false,
+        zIndex:0,
       });
     }
 
@@ -169,46 +174,31 @@ export default class LetterView extends Component {
     });
   }
 
+  setZIndex(){
+    this.setState({
+      zIndex: 5,
+    });
+  }
+
   //Class Function _onPress: Several Animation functions start!
   springOutAnimation(toSize:number, callBack?:()=>{}){
-    /*
-    LayoutAnimation.spring();
-    this.setState({
-      w: this.state.w + standardWidth * sizePercent/100,
-      h: this.state.h + standardHeight * sizePercent/100,
-      isPressed: pressed,
-    });
-    */
-    /*var floatingLetterAnimation = ()=>{};
-    if (scored){
-      floatingLetterAnimation = this.addFloatingLetter();
-    }*/
     Animated.spring(
            this.state.w,
            {
              toValue: toSize,
-             friction: 5,
-             tension: 100,
+             friction: this.friction,//5,
+             tension: this.tension,//100,
            }
          ).start(callBack);
   }
 
   springInAnimation(toSize:number, callBack?:()=>{}){
-    /*
-    LayoutAnimation.spring();
-    this.setState({
-      w: this.state.w - standardWidth * sizePercent/100,
-      h: this.state.h - standardHeight * sizePercent/100,
-      isPressed: pressed,
-    });
-    */
-
     Animated.spring(
            this.state.w,
            {
              toValue: toSize,
-             friction: 5,
-             tension: 100,
+             friction: this.friction,//5,
+             tension: this.tension,//100,
            }
          ).start(callBack);
   }
@@ -227,6 +217,7 @@ export default class LetterView extends Component {
     }, pressAnimationTime);
     this.props.stopReveal();
     this.scaleFontSize(150);
+    this.setZIndex();
     this.springOutAnimation(toSize);
     this.setPressed(true);
     setTimeout( ()=>{
@@ -295,8 +286,8 @@ export default class LetterView extends Component {
            this.state.fontSize,
            {
              toValue: size,
-             friction: 5,
-             tension: 100,
+             friction: this.friction,//5,
+             tension: this.tension,//100,
            }
          ).start();
   }
@@ -306,8 +297,8 @@ export default class LetterView extends Component {
            this.state.fontSize,
            {
              toValue: size,
-             friction: 5,
-             tension: 100,
+             friction: this.friction,//5,
+             tension: this.tension,//100,
            }
          ).start();
   }
@@ -353,7 +344,7 @@ export default class LetterView extends Component {
     }
 
     return (
-      <View>
+      <View style = {{zIndex: this.state.zIndex}}>
       <TouchableWithoutFeedback onPressIn = {this._onPress.bind(this)}>
           <Animated.View style = {[styles.letterView, {width: this.state.w, height: this.state.w}, {backgroundColor: this.backgroundColorWhenHidden() || /*backgroundColorToMatchLetter[this.props.letter] ||*/ this.props.backgroundColor}]}>
             <Letter
