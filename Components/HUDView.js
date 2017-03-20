@@ -28,7 +28,7 @@ export default class HUDView extends Component{
     return (
       <View style = {styles.hudView}>
         <Text style = {styles.text}>
-          A
+          {this.props.currentLetter}
         </Text>
         <Text style = {[styles.text, styles.math, styles.times]}>
           x

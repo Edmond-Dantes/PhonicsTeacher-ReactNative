@@ -19,6 +19,7 @@ import {
   Animated,
   Easing,
 } from 'react-native';
+import Sound from 'react-native-sound';
 
 var {
   height:deviceHeight,
@@ -97,11 +98,9 @@ class Letter extends Component{
   }
 
   render(){
-    let display = this.props.showLetter ? this.props.letter : '';
-    //let {color:currentFontColor} = styles.letter;
+    let display = '';//this.props.showLetter ? this.props.letter : '';
     let fontColor = (!this.props.letter /*== 'A'*/) ? 'transparent':StyleSheet.flatten(styles.letter).color;
-    //console.log(fontColor)
-    //this.props.increaseFontSize();
+
 
     return (
       <View >
@@ -266,10 +265,12 @@ export default class LetterView extends Component {
         }
       }
       else if (pressedCorrectLetter){
+        this.props.correctLetterSound.play();
         this.scoredAnimation();
         this.didScore(true);
       }
       else{
+        this.props.wrongLetterSound.play();
         this.wrongLetterAnimation();
         this.didHitWrongLetter(true);
       }

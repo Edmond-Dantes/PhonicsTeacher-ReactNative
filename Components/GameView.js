@@ -16,7 +16,8 @@ import {
 } from 'react-native';
 import LetterView from './LetterView';
 import HUDView from './HUDView';
-import GameLogic from '../GameLogic/GameLogic'
+import GameLogic from '../GameLogic/GameLogic';
+import Sound from 'react-native-sound';
 
 var {
   height:deviceHeight,
@@ -45,11 +46,13 @@ var letterViewPositions = {
   'bottomRight':4,
 }
 
-var currentLetter = 'A'
+//var currentLetter = 'A';
 
 export default class GameView extends Component {
   state;
   gameLogic:GameLogic;
+  soundFiles = [];
+  currentLetter = 'A';
 
   //props: {};
   constructor(props){
@@ -59,6 +62,9 @@ export default class GameView extends Component {
       activeScoreTouch: false,
       //shouldPositionHideArray: [false, false, false, false]
     };
+
+    this.gameLogic.currentLetter = this.currentLetter
+
   }
 
   shouldShowPosition(position:string){
@@ -74,7 +80,7 @@ export default class GameView extends Component {
 
   updateCount(displayLetter:string, position:string, previousCount:number){//count:number){
 
-    if (!this.state.activeScoreTouch && currentLetter == displayLetter && this.shouldShowPosition(position)){
+    if (!this.state.activeScoreTouch && this.gameLogic.currentLetter == displayLetter && this.shouldShowPosition(position)){
         this.setState({
           activeScoreTouch: true,
         });
@@ -83,10 +89,12 @@ export default class GameView extends Component {
       return previousCount + 1
     }
   }
-
+  componentWillMount(){
+    //this.loadSoundFiles();
+  }
   componentDidMount(){
     //this.startRandomLetterReveal();
-    this.gameLogic.startRandomLetterReveal(this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this));
+    this.gameLogic.startRandomLetterReveal(this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this), );
   }
 
   componentWillUnmount(){
@@ -118,23 +126,26 @@ export default class GameView extends Component {
   render() {
     var testLetterArray = ['','A','B','C','D'];
     var letterArray = ['A','O','U'];
-    var letterSounds = ['aSound1.mp3', 'oSound1.mp3', 'uSound1.mp3'];
+    var letterSoundsArray = ['aSound1.mp3', 'oSound1.mp3', 'uSound1.mp3'];
 
     const randomLetter = letterArray[this.gameLogic.randomLetterIndex];
     const letter = randomLetter;//'A' //randomLetter
-    const correctDelayTime = 1000;
 
+    const correctDelayTime = 1000;
+    const correctSoundIndex = this.gameLogic.randomCorrectSoundIndex
+    var correctSound = this.gameLogic.correctLetterSoundFiles[correctSoundIndex]
 
     var topRowZIndex = this.isTopRowZIndexPriority()?1:0;
     var bottomRowZIndex = this.isTopRowZIndexPriority()?0:1;
 
     return (
       <View style = {styles.bigContainer}>
-        <HUDView scoreCount = {this.gameLogic.scoreCount}/>
+        <HUDView scoreCount = {this.gameLogic.scoreCount} currentLetter = {this.gameLogic.currentLetter}/>
         <View style = {styles.container}>
           <View style = {[styles.letterRow, {zIndex: topRowZIndex}]}>
             <LetterView
-
+              correctLetterSound = {correctSound}
+              wrongLetterSound = {this.gameLogic.wrongLetterSoundFiles[0]}
               onPress = {this.updateCount.bind(this, letter, 'topLeft', this.gameLogic.scoreCount)}
               position = 'topLeft'
               backgroundColor = {'royalblue'}
@@ -145,7 +156,8 @@ export default class GameView extends Component {
               startReveal = {this.gameLogic.startRandomLetterReveal.bind(this.gameLogic.that, this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this), true, correctDelayTime)}
             />
             <LetterView
-
+              correctLetterSound = {correctSound}
+              wrongLetterSound = {this.gameLogic.wrongLetterSoundFiles[0]}
               onPress = {this.updateCount.bind(this, letter, 'topRight', this.gameLogic.scoreCount)}
               position = 'topRight'
               backgroundColor = 'goldenrod'
@@ -158,7 +170,8 @@ export default class GameView extends Component {
           </View>
           <View style = {[styles.letterRow, {zIndex: bottomRowZIndex}]}>
             <LetterView
-
+              correctLetterSound = {correctSound}
+              wrongLetterSound = {this.gameLogic.wrongLetterSoundFiles[0]}
               onPress = {this.updateCount.bind(this, letter, 'bottomLeft', this.gameLogic.scoreCount)}
               position = 'bottomLeft'
               backgroundColor = 'tomato'
@@ -169,7 +182,8 @@ export default class GameView extends Component {
               startReveal = {this.gameLogic.startRandomLetterReveal.bind(this.gameLogic.that, this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this), true, correctDelayTime)}
             />
             <LetterView
-
+              correctLetterSound = {correctSound}
+              wrongLetterSound = {this.gameLogic.wrongLetterSoundFiles[0]}
               onPress = {this.updateCount.bind(this, letter, 'bottomRight', this.gameLogic.scoreCount)}
               position = 'bottomRight'
               backgroundColor = 'seagreen'

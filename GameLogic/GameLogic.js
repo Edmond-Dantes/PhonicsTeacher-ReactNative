@@ -8,8 +8,12 @@ import {
   Text,
   Dimensions
 } from 'react-native';
+//import Sound from 'react-native-sound';
 //import LetterView from './LetterView';
 //import HUDView from "./HUDView";
+
+//var Sound = require('react-native-sound');
+import Sound from 'react-native-sound';
 
 var {
   height:deviceHeight,
@@ -31,6 +35,7 @@ function getNewRandomInt(min, max, previousRandomNumber){
 }
 
 export default class GameLogic{
+
   positionToShow: number;
   previousRandomNumber: number;
   previousRandomDelayDelta: number;
@@ -40,7 +45,13 @@ export default class GameLogic{
   scoreCount: number;
   randomLetterRevealStartTimer;
   letterRevealTimer;
+  //that = this;
+  soundFiles = [];
+  correctLetterSoundFiles = [];
+  wrongLetterSoundFiles = [];
+  currentLetter = '';
   that = this;
+  letterArray = ['A','O','U'];
   constructor(){
     this.positionToShow = 0;
     this.previousRandomNumber = 0;
@@ -48,8 +59,75 @@ export default class GameLogic{
     this.previousRandomDelay = 0;
     this.previousRandomLetterIndex = 6;
     this.randomLetterIndex = 0;
+    this.randomCorrectSoundIndex = 0;
     this.scoreCount = 0;
+
+
+    this.loadSoundFiles();
+
   }
+
+  loadCorrectSound(){
+    //load wrong letter sound
+    var correctLetterSound = ['NiceJob.mp3','Wonderful.mp3','Yep.mp3'];
+    for (var i =0; i < correctLetterSound.length; i++){
+      var correctSound = new Sound(correctLetterSound[i], Sound.MAIN_BUNDLE, (error) => {
+        if (error) {
+          console.log('failed to load the sound', error);
+          return;
+        }
+      // loaded successfully
+      console.log('duration in seconds: ' + correctSound.getDuration() + 'number of channels: ' + correctSound.getNumberOfChannels());
+      });
+      this.correctLetterSoundFiles.push(correctSound);
+    }
+  }
+
+  loadWrongSound(){
+    //load wrong letter sound
+    var wrongLetterSound = ['mistakeSound.mp3']
+    var wrongSound = new Sound(wrongLetterSound[0], Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+        console.log('failed to load the sound', error);
+        return;
+      }
+    // loaded successfully
+    console.log('duration in seconds: ' + wrongSound.getDuration() + 'number of channels: ' + wrongSound.getNumberOfChannels());
+    });
+    this.wrongLetterSoundFiles.push(wrongSound);
+  }
+
+  loadSoundFiles(){
+    this.loadCorrectSound();
+    this.loadWrongSound();
+
+    //load letter sounds
+
+    var aSounds = ['aSound1.mp3','aSound2.mp3','aSound3.mp3'];
+    var oSounds = ['oSound1.mp3','oSound2.mp3','oSound3.mp3'];
+    var uSounds = ['uSound1.mp3','uSound2.mp3','uSound3.mp3'];
+
+    var sounds = [aSounds, oSounds, uSounds];
+    for (var i =0; i < sounds.length; i++){
+      var tempArray = [];
+      for (var j =0; j < sounds[i].length; j++){
+        var newSound = new Sound(sounds[i][j], Sound.MAIN_BUNDLE, (error) => {
+          if (error) {
+            console.log('failed to load the sound', error);
+            return;
+          }
+        // loaded successfully
+        console.log('duration in seconds: ' + newSound.getDuration() + 'number of channels: ' + newSound.getNumberOfChannels());
+        });
+        tempArray.push(newSound);
+      }
+      this.soundFiles.push(tempArray);
+    }
+  }
+
+  /*getCorrectLetterSound(){
+    return  this.correctLetterSoundFiles[this.randomCorrectSoundIndex];
+  }*/
 
   randomLetterRevealUpdate(averageLetterDisplayTime:number, renderUpdate = ()=>{}, activeScoreTouchUpdate = ()=>{}){
       var randomNumber = getNewRandomInt(1, 4, this.previousRandomNumber)
@@ -91,14 +169,19 @@ export default class GameLogic{
       call();
     }
     function call(){
-      //that.randomLetterRevealUpdate(averageLetterDisplayTime, renderUpdate, activeScoreTouchUpdate);
 
       (function setTimeoutTimer(){
         var randomDelay = averageTimerInterval + (averageTimerInterval / 8) * getNewRandomInt(0, 4, that.previousRandomDelay) - averageLetterDisplayTime/4;
         that.randomLetterRevealStartTimer = setTimeout( ()=>{
           that.randomLetterIndex = getNewRandomInt(0, 2, that.previousRandomLetterIndex);
+          //var randomLetterIndex = that.randomLetterIndex;
+          if (that.letterArray[that.randomLetterIndex] === that.currentLetter){
+            that.randomCorrectSoundIndex = randomInt(0, that.correctLetterSoundFiles.length - 1);
+          }
+
           that.randomLetterRevealUpdate(averageLetterDisplayTime, renderUpdate, activeScoreTouchUpdate);
           that.previousRandomDelay = randomDelay;
+          that.playLetterSound(that.randomLetterIndex);
           renderUpdate();
           setTimeoutTimer();
         }, randomDelay);
@@ -108,6 +191,7 @@ export default class GameLogic{
 
   stopRandomLetterReveal(){
     //var that = this;
+    //this.stopSounds();
     clearTimeout(this.letterRevealTimer);
     clearTimeout(this.randomLetterRevealStartTimer);
     //clearInterval();
@@ -116,6 +200,30 @@ export default class GameLogic{
   getThis(){
     var that = this;
     return that
+  }
+
+  /*stopSounds(){
+    for (var i =0; i < soundFiles.length; i++){
+      this.soundFiles[i].stop();
+    }
+  }
+  */
+
+  playLetterSound(soundIndex){
+    var randomSoundVersion = randomInt(0, this.soundFiles[soundIndex].length - 1);
+    //play the sound
+    this.soundFiles[soundIndex][randomSoundVersion].play();
+
+/*
+    this.soundFiles[soundIndex].play((success) => {
+      if (success) {
+        console.log('successfully finished playing');
+      } else {
+        console.log('playback failed due to audio decoding errors');
+      }
+    });
+*/
+
   }
 
 }
