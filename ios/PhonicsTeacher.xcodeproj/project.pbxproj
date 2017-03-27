@@ -46,9 +46,10 @@
 		8594165F1E7FFAC800F61372 /* uSound3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 8594165A1E7FFAC800F61372 /* uSound3.mp3 */; };
 		859416611E80001F00F61372 /* oSound3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 859416601E80001F00F61372 /* oSound3.mp3 */; };
 		859416631E80068C00F61372 /* mistakeSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 859416621E80068C00F61372 /* mistakeSound.mp3 */; };
-		859416671E80102300F61372 /* NiceJob.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 859416641E80102300F61372 /* NiceJob.mp3 */; };
-		859416681E80102300F61372 /* Wonderful.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 859416651E80102300F61372 /* Wonderful.mp3 */; };
-		859416691E80102300F61372 /* Yep.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 859416661E80102300F61372 /* Yep.mp3 */; };
+		85E78EF61E897B0300C17B8B /* NiceJob.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 85E78EF21E897B0300C17B8B /* NiceJob.mp3 */; };
+		85E78EF71E897B0300C17B8B /* soundIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E78EF31E897B0300C17B8B /* soundIcon.png */; };
+		85E78EF81E897B0300C17B8B /* Wonderful.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 85E78EF41E897B0300C17B8B /* Wonderful.mp3 */; };
+		85E78EF91E897B0300C17B8B /* Yep.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 85E78EF51E897B0300C17B8B /* Yep.mp3 */; };
 		B12F752D7372464DBF5A247F /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB3FED1CF1934713A6C400CD /* libRNSound.a */; };
 /* End PBXBuildFile section */
 
@@ -286,9 +287,10 @@
 		8594165A1E7FFAC800F61372 /* uSound3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = uSound3.mp3; path = "../../../Game Development/PhonicsGame/uSound3.mp3"; sourceTree = "<group>"; };
 		859416601E80001F00F61372 /* oSound3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = oSound3.mp3; path = "../../../Game Development/PhonicsGame/oSound3.mp3"; sourceTree = "<group>"; };
 		859416621E80068C00F61372 /* mistakeSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = mistakeSound.mp3; path = "../../../Game Development/PhonicsGame/mistakeSound.mp3"; sourceTree = "<group>"; };
-		859416641E80102300F61372 /* NiceJob.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = NiceJob.mp3; path = "../../PhonicsTeacher SoundFIles/NiceJob.mp3"; sourceTree = "<group>"; };
-		859416651E80102300F61372 /* Wonderful.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Wonderful.mp3; path = "../../PhonicsTeacher SoundFIles/Wonderful.mp3"; sourceTree = "<group>"; };
-		859416661E80102300F61372 /* Yep.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Yep.mp3; path = "../../PhonicsTeacher SoundFIles/Yep.mp3"; sourceTree = "<group>"; };
+		85E78EF21E897B0300C17B8B /* NiceJob.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = NiceJob.mp3; path = "../../PhonicsTeacher Media FIles/NiceJob.mp3"; sourceTree = "<group>"; };
+		85E78EF31E897B0300C17B8B /* soundIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = soundIcon.png; path = "../../PhonicsTeacher Media FIles/soundIcon.png"; sourceTree = "<group>"; };
+		85E78EF41E897B0300C17B8B /* Wonderful.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Wonderful.mp3; path = "../../PhonicsTeacher Media FIles/Wonderful.mp3"; sourceTree = "<group>"; };
+		85E78EF51E897B0300C17B8B /* Yep.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Yep.mp3; path = "../../PhonicsTeacher Media FIles/Yep.mp3"; sourceTree = "<group>"; };
 		92C7419B2060481AADD40D55 /* RNSound.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
 		FB3FED1CF1934713A6C400CD /* libRNSound.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSound.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -430,9 +432,10 @@
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
-				859416641E80102300F61372 /* NiceJob.mp3 */,
-				859416651E80102300F61372 /* Wonderful.mp3 */,
-				859416661E80102300F61372 /* Yep.mp3 */,
+				85E78EF21E897B0300C17B8B /* NiceJob.mp3 */,
+				85E78EF31E897B0300C17B8B /* soundIcon.png */,
+				85E78EF41E897B0300C17B8B /* Wonderful.mp3 */,
+				85E78EF51E897B0300C17B8B /* Yep.mp3 */,
 				859416501E7FD76600F61372 /* aSound1.mp3 */,
 				859416511E7FD76600F61372 /* oSound1.mp3 */,
 				859416561E7FFAC800F61372 /* aSound2.mp3 */,
@@ -913,15 +916,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85E78EF71E897B0300C17B8B /* soundIcon.png in Resources */,
 				859416611E80001F00F61372 /* oSound3.mp3 in Resources */,
+				85E78EF81E897B0300C17B8B /* Wonderful.mp3 in Resources */,
+				85E78EF91E897B0300C17B8B /* Yep.mp3 in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				859416551E7FD76600F61372 /* uSound1.mp3 in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				859416671E80102300F61372 /* NiceJob.mp3 in Resources */,
+				85E78EF61E897B0300C17B8B /* NiceJob.mp3 in Resources */,
 				8594165E1E7FFAC800F61372 /* uSound2.mp3 in Resources */,
-				859416691E80102300F61372 /* Yep.mp3 in Resources */,
 				859416631E80068C00F61372 /* mistakeSound.mp3 in Resources */,
-				859416681E80102300F61372 /* Wonderful.mp3 in Resources */,
 				8594165F1E7FFAC800F61372 /* uSound3.mp3 in Resources */,
 				8594165D1E7FFAC800F61372 /* oSound2.mp3 in Resources */,
 				859416541E7FD76600F61372 /* oSound1.mp3 in Resources */,

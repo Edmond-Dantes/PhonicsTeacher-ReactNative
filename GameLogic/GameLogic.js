@@ -36,6 +36,8 @@ function getNewRandomInt(min, max, previousRandomNumber){
 
 export default class GameLogic{
 
+  randomCorrectSoundIndex:number;
+  previousCorrectSoundIndex:number;
   positionToShow: number;
   previousRandomNumber: number;
   previousRandomDelayDelta: number;
@@ -49,6 +51,7 @@ export default class GameLogic{
   soundFiles = [];
   correctLetterSoundFiles = [];
   wrongLetterSoundFiles = [];
+  currentStudySound:Sound;
   currentLetter = '';
   that = this;
   letterArray = ['A','O','U'];
@@ -60,6 +63,7 @@ export default class GameLogic{
     this.previousRandomLetterIndex = 6;
     this.randomLetterIndex = 0;
     this.randomCorrectSoundIndex = 0;
+    this.previousCorrectSoundIndex = 0;
     this.scoreCount = 0;
 
 
@@ -176,7 +180,8 @@ export default class GameLogic{
           that.randomLetterIndex = getNewRandomInt(0, 2, that.previousRandomLetterIndex);
           //var randomLetterIndex = that.randomLetterIndex;
           if (that.letterArray[that.randomLetterIndex] === that.currentLetter){
-            that.randomCorrectSoundIndex = randomInt(0, that.correctLetterSoundFiles.length - 1);
+            that.randomCorrectSoundIndex = getNewRandomInt(0, that.correctLetterSoundFiles.length - 1, that.previousCorrectSoundIndex);
+            that.previousCorrectSoundIndex = that.randomCorrectSoundIndex;
           }
 
           that.randomLetterRevealUpdate(averageLetterDisplayTime, renderUpdate, activeScoreTouchUpdate);
@@ -208,6 +213,17 @@ export default class GameLogic{
     }
   }
   */
+  playStudyLetterSound(letter, reset?:bool){
+    if (this.currentStudySound && reset){
+      this.currentStudySound.stop();
+    }
+    var soundConvert = {'A':0, 'O':1, 'U':2};
+    var soundIndex = soundConvert[letter];
+    var randomSoundVersion = randomInt(0, this.soundFiles[soundIndex].length - 1);
+    //play the sound
+    this.soundFiles[soundIndex][randomSoundVersion].play();
+    this.currentStudySound = this.soundFiles[soundIndex][randomSoundVersion];
+  }
 
   playLetterSound(soundIndex){
     var randomSoundVersion = randomInt(0, this.soundFiles[soundIndex].length - 1);

@@ -25,10 +25,12 @@ export default class HUDView extends Component{
 
 
   render(){
+    var letterToDisplay; //= 'あ';
+
     return (
       <View style = {styles.hudView}>
         <Text style = {styles.text}>
-          {this.props.currentLetter}
+          {letterToDisplay || this.props.currentLetter}
         </Text>
         <Text style = {[styles.text, styles.math, styles.times]}>
           x

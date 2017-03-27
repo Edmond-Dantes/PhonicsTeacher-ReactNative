@@ -19,6 +19,26 @@ import HUDView from './HUDView';
 import GameLogic from '../GameLogic/GameLogic';
 import Sound from 'react-native-sound';
 
+
+const navStyles = StyleSheet.create({
+  card:{
+    backgroundColor: 'yellow',
+  },
+  letterHeader: {
+    textShadowColor: 'black',
+    textShadowRadius: 1,
+    textShadowOffset: {
+      width: 0,
+      height: 1,
+    },
+  },
+  header: {
+    backgroundColor: 'beige',
+  },
+
+});
+
+
 var {
   height:deviceHeight,
   width:deviceWidth
@@ -60,12 +80,20 @@ export default class GameView extends Component {
     this.gameLogic = new GameLogic();
     this.state = {
       activeScoreTouch: false,
-      //shouldPositionHideArray: [false, false, false, false]
     };
-
-    this.gameLogic.currentLetter = this.currentLetter
-
+    this.gameLogic.currentLetter = this.props.navigation.state.params.letter;//this.currentLetter;
   }
+
+  static navigationOptions = {
+    title: ({ state }) => `Let's practice ${state.params.letter}`,
+    header: {
+      visible: true,
+      style: navStyles.header,
+      titleStyle: navStyles.letterHeader,
+      tintColor: 'tomato',
+    },
+  };
+
 
   shouldShowPosition(position:string){
     switch (position) {
@@ -124,6 +152,8 @@ export default class GameView extends Component {
   }
 
   render() {
+    const { params } = this.props.navigation.state;
+
     var testLetterArray = ['','A','B','C','D'];
     var letterArray = ['A','O','U'];
     var letterSoundsArray = ['aSound1.mp3', 'oSound1.mp3', 'uSound1.mp3'];
@@ -151,7 +181,7 @@ export default class GameView extends Component {
               backgroundColor = {'royalblue'}
               letter = {letter}
               showLetter = {this.shouldShowPosition('topLeft')}
-              letterBackgroundColor = {this.props.letterBackgroundColor}
+              letterBackgroundColor = {StyleSheet.flatten(styles.bigContainer).backgroundColor}
               stopReveal = {this.gameLogic.stopRandomLetterReveal.bind(this.gameLogic.that)}
               startReveal = {this.gameLogic.startRandomLetterReveal.bind(this.gameLogic.that, this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this), true, correctDelayTime)}
             />
@@ -163,7 +193,7 @@ export default class GameView extends Component {
               backgroundColor = 'goldenrod'
               letter = {letter}
               showLetter = {this.shouldShowPosition('topRight')}
-              letterBackgroundColor = {this.props.letterBackgroundColor}
+              letterBackgroundColor = {StyleSheet.flatten(styles.bigContainer).backgroundColor}
               stopReveal = {this.gameLogic.stopRandomLetterReveal.bind(this.gameLogic.that)}
               startReveal = {this.gameLogic.startRandomLetterReveal.bind(this.gameLogic.that, this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this), true, correctDelayTime)}
             />
@@ -177,7 +207,7 @@ export default class GameView extends Component {
               backgroundColor = 'tomato'
               letter = {letter}
               showLetter = {this.shouldShowPosition('bottomLeft')}
-              letterBackgroundColor = {this.props.letterBackgroundColor}
+              letterBackgroundColor = {StyleSheet.flatten(styles.bigContainer).backgroundColor}
               stopReveal = {this.gameLogic.stopRandomLetterReveal.bind(this.gameLogic.that)}
               startReveal = {this.gameLogic.startRandomLetterReveal.bind(this.gameLogic.that, this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this), true, correctDelayTime)}
             />
@@ -189,7 +219,7 @@ export default class GameView extends Component {
               backgroundColor = 'seagreen'
               letter = {letter}
               showLetter = {this.shouldShowPosition('bottomRight')}
-              letterBackgroundColor = {this.props.letterBackgroundColor}
+              letterBackgroundColor = {StyleSheet.flatten(styles.bigContainer).backgroundColor}
               stopReveal = {this.gameLogic.stopRandomLetterReveal.bind(this.gameLogic.that)}
               startReveal = {this.gameLogic.startRandomLetterReveal.bind(this.gameLogic.that, this.updateRender.bind(this), this.updateActiveScoreTouch.bind(this), true, correctDelayTime)}
             />
@@ -222,5 +252,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-  }
+  },
+  card:{
+    backgroundColor: 'yellow',
+  },
+  letterHeader: {
+    textShadowColor: 'black',
+    textShadowRadius: 1,
+    textShadowOffset: {
+      width: 0,
+      height: 1,
+    },
+  },
+  header: {
+    backgroundColor: 'beige',
+  },
 });

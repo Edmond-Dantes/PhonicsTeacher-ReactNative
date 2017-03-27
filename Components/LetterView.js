@@ -26,12 +26,12 @@ var {
   width:deviceWidth
 } = Dimensions.get('window');
 
-var backgroundColorToMatchLetter = {
+/*var backgroundColorToMatchLetter = {
   'A':'tomato',
   'O':'seagreen',
   'U':'goldenrod',
   'default':'royalblue' //'royalblue','tomato','seagreen','goldenrod'
-};
+};*/
 
 var startCount = 0;
 
